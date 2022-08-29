@@ -89,7 +89,7 @@ private:
     {
         LowCut,
         Peak,
-        HughCut
+        HighCut
     };
 
     void updatePeakFilter(const ChainSettings& chainSettings);
@@ -103,34 +103,38 @@ private:
     }
 
     template<typename ChainType, typename CoefficientType> 
-    void updateCutFilter(ChainType& lowCut, const CoefficientType& cutCoefficients, const Slope& lowCutSlope)
+    void updateCutFilter(ChainType& chain, const CoefficientType& cutCoefficients, const Slope& slope)
     {
-        lowCut.template setBypassed<0>(true);
-        lowCut.template setBypassed<1>(true);
-        lowCut.template setBypassed<2>(true);
-        lowCut.template setBypassed<3>(true);
+        chain.template setBypassed<0>(true);
+        chain.template setBypassed<1>(true);
+        chain.template setBypassed<2>(true);
+        chain.template setBypassed<3>(true);
 
-        switch (lowCutSlope)
+        switch (slope)
         {
         case Slope_48:
         {
-            update<3>(lowCut, cutCoefficients);
+            update<3>(chain, cutCoefficients);
         }
         case Slope_36:
         {
-            update<2>(lowCut, cutCoefficients);
+            update<2>(chain, cutCoefficients);
         }
         case Slope_24:
         {
-            update<1>(lowCut, cutCoefficients);
+            update<1>(chain, cutCoefficients);
         }
         case Slope_12:
         {
-            update<0>(lowCut, cutCoefficients);
+            update<0>(chain, cutCoefficients);
         }
         }
     }
     
+    void updateLowCutFilters(const ChainSettings& chainSettings);
+    void updateHighCutFilters(const ChainSettings& chainSettings);
+
+    void updateFilters();
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleEQAudioProcessor)
