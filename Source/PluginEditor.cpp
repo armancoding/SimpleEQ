@@ -42,6 +42,11 @@ void RotartySliderWithLabels::paint(juce::Graphics& g)
     auto range = getRange();
     auto sliderBounds = getSliderBounds();
 
+    g.setColour(Colour(195u, 195u, 195u));
+    g.drawRect(getLocalBounds());
+    g.setColour(Colour(150u, 150u, 150u));
+    g.drawRect(sliderBounds);
+
     getLookAndFeel().drawRotarySlider(g, sliderBounds.getX(),
                                          sliderBounds.getY(),
                                          sliderBounds.getWidth(),
@@ -52,7 +57,16 @@ void RotartySliderWithLabels::paint(juce::Graphics& g)
 
 juce::Rectangle<int> RotartySliderWithLabels::getSliderBounds() const
 {
-    return getLocalBounds();
+   // return getLocalBounds();
+    auto bounds = getLocalBounds();
+    auto size = juce::jmin(bounds.getWidth(), bounds.getHeight());
+    size -= getTextHeight() * 2;
+    juce::Rectangle<int> r;
+    r.setSize(size, size);
+    r.setCentre(bounds.getCentreX(), 0);
+    r.setY(2);
+
+    return r;
 }
 
 //============================================================================== 
@@ -110,7 +124,7 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
     using namespace juce;
 
 
-    g.fillAll(Colour());
+    g.fillAll(juce::Colours::black);
 
     auto responseArea = getLocalBounds();
     auto w = responseArea.getWidth();
@@ -215,7 +229,7 @@ void SimpleEQAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
 
-    g.fillAll (juce::Colours::black);
+    g.fillAll (juce::Colour(46u, 46u, 46u));
 
 }
 
