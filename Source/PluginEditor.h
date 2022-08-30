@@ -35,6 +35,14 @@ struct RotartySliderWithLabels : juce::Slider
         setLookAndFeel(nullptr);
     }
 
+    struct LabelPos
+    {
+        float pos;
+        juce::String label;
+    };
+
+    juce::Array <LabelPos> labels;
+
     void paint(juce::Graphics& g) override;
     juce::Rectangle<int> getSliderBounds() const;
     int getTextHeight() const { return 14; }
@@ -64,6 +72,8 @@ private:
     SimpleEQAudioProcessor& audioProcessor;
     juce::Atomic<bool> parametersChanged{ false };
     MonoChain monoChain;
+
+    void updateChain();
 };
 
 //==============================================================================
@@ -78,6 +88,7 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -109,3 +120,12 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleEQAudioProcessorEditor)
 };
+
+namespace MyColors
+{
+    const juce::Colour Text = { 195u, 195u, 195u };
+    const juce::Colour Background = { 46u, 46u, 46u };
+    const juce::Colour Foreground = { 50u, 130, 150u };
+    const juce::Colour Border = { 175u, 255u, 255u };
+
+}
