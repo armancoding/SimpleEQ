@@ -58,10 +58,10 @@ void RotartySliderWithLabels::paint(juce::Graphics& g)
     auto range = getRange();
     auto sliderBounds = getSliderBounds();
 
-    g.setColour(Colour(195u, 195u, 195u));
-    g.drawRect(getLocalBounds());
-    g.setColour(Colour(150u, 150u, 150u));
-    g.drawRect(sliderBounds);
+    //g.setColour(Colour(195u, 195u, 195u));
+    //g.drawRect(getLocalBounds());
+    //g.setColour(Colour(150u, 150u, 150u));
+    //g.drawRect(sliderBounds);
 
     getLookAndFeel().drawRotarySlider(g, sliderBounds.getX(),
                                          sliderBounds.getY(),
@@ -86,8 +86,36 @@ juce::Rectangle<int> RotartySliderWithLabels::getSliderBounds() const
 
 juce::String RotartySliderWithLabels::getDisplayString() const
 {
+    if (auto* choiceParam = dynamic_cast<juce::AudioParameterChoice*>(param))
+        return choiceParam->getCurrentChoiceName();
 
-    return juce::String(getValue());
+    juce::String str;
+    bool addK = false;
+
+    if (auto* floatParam = dynamic_cast<juce::AudioParameterFloat*>(param))
+    {
+        float val = getValue();
+        if (val > 999.f)
+        {
+            val /= 1000.f; 
+            addK = true;
+        }
+        str = juce::String(val, (addK ? 2 : 0));
+    }
+    else
+    {
+        jassertfalse;
+    }
+    
+    if (suffix.isNotEmpty())
+    {
+        str << ' ';
+        if (addK)
+            str << 'k';
+        str << suffix;
+    }
+
+    return str;
 }
 
 //============================================================================== 
@@ -238,7 +266,7 @@ SimpleEQAudioProcessorEditor::SimpleEQAudioProcessorEditor (SimpleEQAudioProcess
         addAndMakeVisible(comp);
     }
 
-    setSize (600, 400);
+    setSize (500, 600);
 }
 
 SimpleEQAudioProcessorEditor::~SimpleEQAudioProcessorEditor()
