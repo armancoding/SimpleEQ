@@ -121,6 +121,11 @@ struct LookAndFeel : juce::LookAndFeel_V4
         float rotaryStartAngle,
         float rotaryEndAngle,
         juce::Slider& slider) override;
+
+    void drawToggleButton(juce::Graphics& g, 
+        juce::ToggleButton& toggleButton, 
+        bool shouldDrawButtonAsHighlighted, 
+        bool shouldDrawButtonAsDown) override;
 };
 
 struct RotartySliderWithLabels : juce::Slider
@@ -205,6 +210,10 @@ private:
     PathProducer leftPathProducer, rightPathProducer;
 };
 
+
+struct PowerButton : juce::ToggleButton {};
+struct AnalyzerButton : juce::ToggleButton {};
+
 //==============================================================================
 /**
 */
@@ -245,19 +254,21 @@ private:
                             lowCutSlopeSliderAttachment,
                             highCutSlopeSliderAttachment;
 
-    juce::ToggleButton      lowcutBypassButton, 
-                            peakBypassButton, 
-                            highcutBypassButton, 
-                            analyuzerEnabledButton;
+    PowerButton             lowcutBypassButton,
+                            peakBypassButton,
+                            highcutBypassButton;
+    AnalyzerButton          analyzerEnabledButton;
 
     using ButtonAttachment = APVTS::ButtonAttachment;
 
     ButtonAttachment        lowcutBypassButtonAttachment,
                             peakBypassButtonAttachment,
                             highcutBypassButtonAttachment,
-                            analyuzerEnabledButtonAttachment;
+                            analyzerEnabledButtonAttachment;
 
     std::vector<juce::Component*> getComps();
+
+    LookAndFeel lnf;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleEQAudioProcessorEditor)
 };
