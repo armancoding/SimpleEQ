@@ -290,6 +290,9 @@ private:
 
     void updateFilters();
 
+    //OscilatorDEBUG for DEBUG || future use reference 1/3 blocks of code (use oscilatorDEBUG to find other references to oscilator code in the solution)
+    //juce::dsp::Oscillator<float> osc;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleEQAudioProcessor)
 };
