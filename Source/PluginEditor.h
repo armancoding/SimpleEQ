@@ -192,11 +192,13 @@ struct ResponseCurveComponent : juce::Component,
     void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override {}
 
     void timerCallback() override;
-
     void paint(juce::Graphics& g) override;
-
     void resized() override;
 
+    void toggleAnalysisEnablement(bool enabled)
+    {
+        shouldShowFFTAnalysis = enabled;
+    }
 private:    
     SimpleEQAudioProcessor& audioProcessor;
     juce::Atomic<bool> parametersChanged{ false };
@@ -208,11 +210,29 @@ private:
     void updateChain();
 
     PathProducer leftPathProducer, rightPathProducer;
+
+    bool shouldShowFFTAnalysis = true;
 };
 
 
 struct PowerButton : juce::ToggleButton {};
-struct AnalyzerButton : juce::ToggleButton {};
+struct AnalyzerButton : juce::ToggleButton 
+{
+    void resized() override
+    {
+        auto bounds = getLocalBounds();
+        auto insertRect = bounds.reduced(4);
+        randomPath.clear();
+        juce::Random r;
+        randomPath.startNewSubPath(insertRect.getX(), insertRect.getY() + insertRect.getHeight() * r.nextFloat());
+
+        for (auto x = insertRect.getX() + 1; x < insertRect.getRight(); x += 2)
+        {
+            randomPath.lineTo(x, insertRect.getY() + insertRect.getHeight() * r.nextFloat());
+        }
+    }
+    juce::Path randomPath;
+};
 
 //==============================================================================
 /**
@@ -241,7 +261,7 @@ private:
                             lowCutSlopeSlider,
                             highCutSlopeSlider;
 
-    ResponseCurveComponent responceCurveComponent;
+    ResponseCurveComponent responseCurveComponent;
 
     using APVTS = juce::AudioProcessorValueTreeState;
     using Attachment = APVTS::SliderAttachment;
