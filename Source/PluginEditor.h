@@ -237,13 +237,25 @@ private:
     using APVTS = juce::AudioProcessorValueTreeState;
     using Attachment = APVTS::SliderAttachment;
 
-    Attachment   peakFreqSliderAttachment,
-                 peakGainSliderAttachment,
-                 peakQualitySliderAttachment,
-                 lowCutFreqSliderAttachment,
-                 highCutFreqSliderAttachment,
-                 lowCutSlopeSliderAttachment,
-                 highCutSlopeSliderAttachment;
+    Attachment              peakFreqSliderAttachment,
+                            peakGainSliderAttachment,
+                            peakQualitySliderAttachment,
+                            lowCutFreqSliderAttachment,
+                            highCutFreqSliderAttachment,
+                            lowCutSlopeSliderAttachment,
+                            highCutSlopeSliderAttachment;
+
+    juce::ToggleButton      lowcutBypassButton, 
+                            peakBypassButton, 
+                            highcutBypassButton, 
+                            analyuzerEnabledButton;
+
+    using ButtonAttachment = APVTS::ButtonAttachment;
+
+    ButtonAttachment        lowcutBypassButtonAttachment,
+                            peakBypassButtonAttachment,
+                            highcutBypassButtonAttachment,
+                            analyuzerEnabledButtonAttachment;
 
     std::vector<juce::Component*> getComps();
 
